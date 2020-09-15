@@ -1,0 +1,5 @@
+15.09.2020
+Gathering information about reading and writing file.txt
+
+Trying to build alice-fit-fpga -> TCM module 
+Additional arguments added to command running make.tcl file resolve this issue (force build)
