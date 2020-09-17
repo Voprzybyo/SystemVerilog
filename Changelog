@@ -13,3 +13,7 @@ File read/write testing. First simple program upload.
 
 16.09.2020
 Draft scheme of IPbus testing class and programs added.
+
+17.09.2020
+Concatenation of IPbus_testing_class.svh and IPbus_testing_module.sv due to include errors. 
+Testing methods added.
