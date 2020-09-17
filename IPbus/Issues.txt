@@ -3,3 +3,8 @@ Gathering information about reading and writing file.txt
 
 Trying to build alice-fit-fpga -> TCM module 
 Additional arguments added to command running make.tcl file resolve this issue (force build)
+
+17.09.2020
+-Resolve EXCEPTION_ACCESS_VIOLATION error while adding initialization module to virtual interface
+-Find a way to connect IPbus structures (ipb_in, ipb_out) with testing module
+-Implement methods to IPbus_testing_class.svh to check status of IPbus signals 
