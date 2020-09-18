@@ -1,9 +1,11 @@
 // Interface declaration
 
 
-interface IPb_intf( input logic ipb_in,
-                    output logic ipb_out);
-
+interface IPb_intf( input ipb_in,
+                    output ipb_out
+					//input logic clk ?
+					); 
+					
 /***** TO DO -> Virtual interface error ( EXCEPTION_ACCESS_VIOLATION ) *****/  
 /*                              
     initial
@@ -95,17 +97,37 @@ class IPbus_testing_class;
 
         while (!$feof(fd)) begin 
             $fscanf(fd, "%d %d %d ", read_or_write, register_addr, value); //Reading line
-            if(read_or_write == 1)
+            if(read_or_write == 1) begin
             $display ("ZAPIS na adres: %08d wartoœci: %0d ", register_addr, value);
-            
             //TO DO
-            //Put parsed memory adresses and corresponding values to IPbus           
+            //Put parsed memory adresses and corresponding values to IPbus      
+            
+            //intf.ipbus.data = value;
+                 
+            end
         end
 
     $fclose(fd);
  
     endtask: read_file
   
+  
+    //Write to file values from IPbus input signals
+    task write_file();
+    
+    int fd; 
+    int register_addr;
+    int value;
+    
+    // 1. Write register status to file 
+    fd = $fopen ("D:/Vivado/alice-fit-fpga/firmware/FT0/TCM/register_status.txt", "w");
+        for (int i = 0; i < 10; i++) begin
+           $display (fd, "IPbus data: %d", intf.ipb_in);
+           $fdisplay (fd, "IPbus data: %d", intf.ipb_in); // intf.ipb_in.data ??? <- error
+        end
+    $fclose(fd);
+ 
+    endtask: write_file
   
   
   
@@ -131,9 +153,13 @@ module IPbus_testing_module;
     $display("Call testing write/read file function");
     temp.test_file_read_write(32);
     
-    //Run writing/reading to file method
-    $display("Reading values and memory adresses from file");
+    //Run reading from file method
+    $display("Reading registers from file");
     temp.read_file();
+    
+    //Run writing to file method
+    $display("Writing to file");
+    temp.write_file();
     
     
   end
