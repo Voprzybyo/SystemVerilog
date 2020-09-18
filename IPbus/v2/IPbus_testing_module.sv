@@ -83,6 +83,32 @@ class IPbus_testing_class;
  
     endtask: test_file_read_write
   
+    //Read from file values for memory adresses
+    task read_file();
+    
+    int fd; 
+    int read_or_write;
+    int register_addr;
+    int value;
+    
+    fd = $fopen ("D:/Vivado/alice-fit-fpga/firmware/FT0/TCM/register.txt", "r");
+
+        while (!$feof(fd)) begin 
+            $fscanf(fd, "%d %d %d ", read_or_write, register_addr, value); //Reading line
+            if(read_or_write == 1)
+            $display ("ZAPIS na adres: %08d wartoœci: %0d ", register_addr, value);
+            
+            //TO DO
+            //Put parsed memory adresses and corresponding values to IPbus           
+        end
+
+    $fclose(fd);
+ 
+    endtask: read_file
+  
+  
+  
+  
 endclass: IPbus_testing_class
  
 
@@ -104,6 +130,11 @@ module IPbus_testing_module;
     //Run writing/reading to file method
     $display("Call testing write/read file function");
     temp.test_file_read_write(32);
+    
+    //Run writing/reading to file method
+    $display("Reading values and memory adresses from file");
+    temp.read_file();
+    
     
   end
   
