@@ -1,13 +1,24 @@
+//IPbus structures from "IPbus_package.vhd" written in SV
+	typedef struct{
+			logic [31:0] ipb_addr;
+			logic [31:0] ipb_wdata;
+			logic ipb_strobe;
+			logic ipb_write;
+	}ipb_wbus;
+
+
+	typedef struct{
+			logic [31:0] ipb_rdata;
+			logic ipb_ack;
+			logic ipb_err;
+    }ipb_rbus;
+
 // Interface declaration
-
-
-interface IPb_intf( input ipb_in,
-                    output ipb_out
+interface IPb_intf( input ipb_rbus ipb_in,
+                    output ipb_wbus ipb_out
 					//input logic clk ?
 					); 
-					
-/***** TO DO -> Virtual interface error ( EXCEPTION_ACCESS_VIOLATION ) *****/  
-/*                              
+					                            
     initial
     begin
     //ipb_in structure initialization
@@ -22,7 +33,7 @@ interface IPb_intf( input ipb_in,
     ipb_out.ipb_write = 1'b1;
     ipb_out.ipb_strobe = 1'b1;
     end  
-*/                         
+                         
 endinterface: IPb_intf
 
 class IPbus_testing_class;
@@ -121,9 +132,10 @@ class IPbus_testing_class;
     
     // 1. Write register status to file 
     fd = $fopen ("D:/Vivado/alice-fit-fpga/firmware/FT0/TCM/register_status.txt", "w");
+        $fdisplay (fd, "TEST");
         for (int i = 0; i < 10; i++) begin
-           $display (fd, "IPbus data: %d", intf.ipb_in);
-           $fdisplay (fd, "IPbus data: %d", intf.ipb_in); // intf.ipb_in.data ??? <- error
+           //$display (fd, "IPbus data: %d", intf.ipb_in.ipb_rdata);
+          // $fdisplay (fd, "IPbus data: %d", intf.ipb_in); // intf.ipb_in.data ??? <- error         
         end
     $fclose(fd);
  
