@@ -1,11 +1,24 @@
 15.09.2020
 Gathering information about reading and writing file.txt
 
+
 16.09.2020
 Trying to build alice-fit-fpga -> TCM module 
 Additional arguments added to command running make.tcl file resolve this issue (force build)
 
+
 17.09.2020
 -Resolve EXCEPTION_ACCESS_VIOLATION error while adding initialization module to virtual interface
+Creating structures rbus and wbus and corresponding object in interface declaration resolve issue.
+
 -Find a way to connect IPbus structures (ipb_in, ipb_out) with testing module
 -Implement methods to IPbus_testing_class.svh to check status of IPbus signals 
+
+
+18.09.2020
+-Find a way to read initial values from structure and write them to txt file. -20000ERROR
+"Accessing null or invalid reference to virtual interface is not allowed."
+
+
+21.09.2020
+Fix error about accesing members of structure in class with virtual interface. Wrong syntax? 

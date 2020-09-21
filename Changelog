@@ -17,3 +17,10 @@ Draft scheme of IPbus testing class and programs added.
 17.09.2020
 Concatenation of IPbus_testing_class.svh and IPbus_testing_module.sv due to include errors. 
 Testing methods added.
+
+18.09.2020
+Write/read file methods added. Parsing separated values from file test.
+
+21.09.2020
+rbus and wbus structures added ( structures from "IPbus_package.vhd" rewritten in Systemverilog syntax ). 
+Virtual interface error "EXCEPTION_ACCESS_VIOLATION" resolved.
