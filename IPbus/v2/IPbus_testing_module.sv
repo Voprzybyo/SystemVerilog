@@ -17,8 +17,7 @@
 interface IPb_intf( input ipb_rbus ipb_in,
                     output ipb_wbus ipb_out
 					//input logic clk ?
-					); 
-					                            
+					);                           
     initial
     begin
     //ipb_in structure initialization
@@ -40,16 +39,31 @@ class IPbus_testing_class;
 
 
     //Virtual interface inside class
-    local virtual IPb_intf intf;
+    virtual IPb_intf intf;
  
-    //Assigning interface method
-    task assign_interface( virtual IPb_intf intf);
+    //Constructor
+    function new( virtual IPb_intf intf);
         this.intf = intf;       //interface named locally as "intf"
-    endtask: assign_interface
+    endfunction
 
     //Read virtual interface method
     task read_intf(virtual IPb_intf intf); //Interface given as a parameter
-       //TO DO
+       
+       //TO DO - not finished yet!
+       /*
+       
+       //IN
+       $display("ipb_rdata: %d", intf.ipb_in.ipb_rdata);
+       $display("ipb_ack: %d", intf.ipb_in.ipb_ack);
+       $display("ipb_err: %d", intf.ipb_in.ipb_err);
+       
+       //OUT
+       $display("ipb_wdata: %d", intf.ipb_out.ipb_wdata);
+       $display("ipb_addr: %d", intf.ipb_out.ipb_addr);
+       $display("ipb_write: %d", intf.ipb_out.ipb_write);
+       $display("ipb_strobe: %d", intf.ipb_out.ipb_strobe);
+       
+       */
     endtask: read_intf
 
 
@@ -122,7 +136,7 @@ class IPbus_testing_class;
  
     endtask: read_file
   
-  
+ 
     //Write to file values from IPbus input signals
     task write_file();
     
@@ -134,24 +148,43 @@ class IPbus_testing_class;
     fd = $fopen ("D:/Vivado/alice-fit-fpga/firmware/FT0/TCM/register_status.txt", "w");
         $fdisplay (fd, "TEST");
         for (int i = 0; i < 10; i++) begin
-           //$display (fd, "IPbus data: %d", intf.ipb_in.ipb_rdata);
-          // $fdisplay (fd, "IPbus data: %d", intf.ipb_in); // intf.ipb_in.data ??? <- error         
+           //$display ("IPbus data: %d", intf.ipb_in.ipb_rdata);
+           //$fdisplay (fd, "IPbus data: %d", intf.ipb_in.ipb_ack); 
         end
     $fclose(fd);
  
     endtask: write_file
   
   
+      //Assign values from file to interface members
+    task assign_values();
+      //TO DO
+    int fd; 
+
+    fd = $fopen ("D:/Vivado/alice-fit-fpga/firmware/FT0/TCM/IPbus_init.txt", "r");
+
+        while (!$feof(fd)) begin 
+            $fscanf(fd, "%d %d %d ", intf.ipb_in.ipb_rdata, intf.ipb_in.ipb_ack, intf.ipb_in.ipb_err); //Reading IN values from file
+        end
+         $display ("Zapisane wartosci:%d %d %d ", intf.ipb_in.ipb_rdata, intf.ipb_in.ipb_ack, intf.ipb_in.ipb_err);
+
+    $fclose(fd);
+          
+    endtask: assign_values
   
 endclass: IPbus_testing_class
  
 
 module IPbus_testing_module;
 
+virtual IPb_intf intf_in_module; // TO DO
+
+
   initial begin
   
-    IPbus_testing_class temp = new(); //Creating handle and object
-
+    //Calling constructor
+    IPbus_testing_class temp = new(intf_in_module); //Creating handle and object  
+    
     //Setters and getters test
     $display("Setting value -> 20");
     temp.set(20);
@@ -171,8 +204,14 @@ module IPbus_testing_module;
     
     //Run writing to file method
     $display("Writing to file");
-    temp.write_file();
+    //temp.write_file();
     
+    //Run method assigning values to IPbus structures members
+    $display("Assigning values...");
+    temp.assign_values();
+    
+    //Run method reading values assigned to members of IPbus structures 
+    //temp.read_intf(intf_in_module);
     
   end
   
