@@ -1,0 +1,7 @@
+ipb_rdata: fcfcfcfc
+ipb_ack: 1
+ipb_err: 1
+ipb_wdata: 55555555
+ipb_addr: 00000000
+ipb_write: 1
+ipb_strobe: 1
